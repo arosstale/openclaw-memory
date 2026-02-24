@@ -8,10 +8,10 @@
  * - bank/opinions.md (confidence-bearing beliefs)
  */
 
-import Database from 'better-sqlite3';
 import { readFileSync, existsSync } from 'fs';
 import { readdirSync } from 'fs';
 import { join } from 'path';
+import { createDatabase, Database } from '../database/db';
 
 export interface IndexConfig {
   workspace: string;
@@ -32,7 +32,7 @@ export interface IndexedChunk {
 }
 
 export class MemoryIndexer {
-  private db: Database.Database;
+  private db: Database;
   private workspace: string;
   private chunkSize: number;
   private chunkOverlap: number;
@@ -42,7 +42,7 @@ export class MemoryIndexer {
     this.chunkSize = config.chunkSize || 400;
     this.chunkOverlap = config.chunkOverlap || 80;
 
-    this.db = new Database(config.dbPath);
+    this.db = createDatabase(config.dbPath);
     this.initSchema();
   }
 

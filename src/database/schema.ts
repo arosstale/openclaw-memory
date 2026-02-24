@@ -8,9 +8,9 @@
  * 4. alma_evaluations — performance metrics
  */
 
-import Database from 'better-sqlite3';
+import { Database } from './db';
 
-export function initializeSchema(db: Database.Database): void {
+export function initializeSchema(db: Database): void {
   // Enable FTS5 extension
   db.exec('CREATE VIRTUAL TABLE IF NOT EXISTS memory_chunks USING fts5(file, line_start, line_end, content, tokenize = "unicode61 remove_diacritics 0")');
 
@@ -76,7 +76,7 @@ export function initializeSchema(db: Database.Database): void {
 /**
  * Migrate schema if needed
  */
-export function migrateSchema(db: Database.Database): void {
+export function migrateSchema(db: Database): void {
   const meta = db.prepare('SELECT value FROM metadata WHERE key = ?').get('schema_version');
   const currentVersion = meta?.value || '0.0.0';
 

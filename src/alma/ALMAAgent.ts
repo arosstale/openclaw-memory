@@ -8,9 +8,9 @@
  * 4. Repeat (iterate to improve)
  */
 
-import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
 import { initializeSchema, migrateSchema } from '../database/schema';
+import { createDatabase, Database } from '../database/db';
 import { gaussianMutation, simulatedAnnealingMutation, adaptiveMutation } from './mutations';
 import {
   MemoryDesign,
@@ -21,13 +21,13 @@ import {
 } from './types';
 
 export class ALMAAgent {
-  private db: Database.Database;
+  private db: Database;
   private constraints: ParameterConstraints;
   private populationSize: number;
   private mutationRate: number;
 
   constructor(config: ALMAConfig) {
-    this.db = new Database(config.dbPath);
+    this.db = createDatabase(config.dbPath);
     initializeSchema(this.db);
     migrateSchema(this.db);
 
