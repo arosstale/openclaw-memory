@@ -12,16 +12,17 @@ Agent memory that **retains, recalls, and reflects** — automatically extractin
 ## Reality
 
 **What memory is:**
-- Plain Markdown in your workspace (git-backed, human-readable)
-- Structured fact extraction from conversations
-- Full-text + semantic search with citations
-- Self-improving via ALMA meta-learning
+- **Auto-extracting** — Hooks into every request/response, auto-extracts facts
+- **Always-on search** — Injects relevant memories into every prompt
+- **Self-optimizing** — ALMA learns best memory design over time
+- **Local-first** — SQLite + Markdown, git-backed, no cloud
+- **Semantic-aware** — FTS5 + vector search for meaning, not just keywords
 
 **What memory is NOT:**
-- A replacement for `MEMORY.md` (it extends it)
-- A cloud service (works offline)
-- A magic bullet (agents still need good prompts)
-- A replacement for agent thinking (it's just storage)
+- A replacement for good prompting (it augments, not replaces)
+- A cloud service (works 100% offline)
+- A magic bullet (still needs agent cognition)
+- A replacement for agent thinking (it's persistent context)
 
 **Key constraint:** Every fact must be **written to disk** to be remembered. Memory-in-context is temporary; persistent memory requires explicit writes.
 
@@ -32,35 +33,10 @@ Agent memory that **retains, recalls, and reflects** — automatically extractin
 ### 1. Install
 
 ```bash
-cd ~/.openclaw
 npm install @openclaw/memory
 ```
 
-### 2. Bootstrap workspace
-
-```bash
-openclaw memory init
-```
-
-Creates:
-```
-~/.openclaw/workspace/
-├── MEMORY.md                    # core facts
-├── memory/
-│   └── 2026-02-24.md           # daily log
-└── bank/
-    ├── world.md                 # objective facts
-    ├── experience.md            # what happened
-    ├── opinions.md              # prefs + confidence
-    └── entities/
-        ├── Alice.md
-        ├── The-Castle.md
-        └── ...
-```
-
-### 3. Configure
-
-In `~/.openclaw/openclaw.json`:
+### 2. Configure in openclaw.json
 
 ```json
 {
@@ -70,23 +46,33 @@ In `~/.openclaw/openclaw.json`:
       "provider": "@openclaw/memory",
       "config": {
         "workspace": "~/.openclaw/workspace",
-        "embedProvider": "openai",
-        "embedModel": "text-embedding-3-small",
+        "autoHooks": true,      // Auto-extract from every turn
+        "autoInject": true,     // Auto-inject memories into prompts
         "llmProvider": "anthropic",
-        "llmModel": "claude-opus-4-6"
+        "embedProvider": "openai"
       }
     }
   }
 }
 ```
 
-### 4. Use it
+### 3. That's it
 
-Agent calls:
+Memory now works **automatically**:
+- ✅ Auto-extracts facts from every conversation
+- ✅ Auto-injects relevant memories into prompts
+- ✅ Runs semantic search in background
+- ✅ Optimizes design via ALMA meta-learning
+
+### 4. Dashboard (Optional)
+
+```bash
+openclaw memory dashboard
+# Opens http://localhost:9091
+# Browse, search, manage memories visually
 ```
-memory_search("What does Alice prefer?")
-memory_append("## Retain\n- O(c=0.95) @Alice: Prefers async communication")
-```
+
+No manual API calls needed. Just use OpenClaw normally.
 
 ---
 

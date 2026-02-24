@@ -1,0 +1,64 @@
+{
+  "name": "@openclaw/memory",
+  "version": "1.0.0",
+  "description": "Hindsight Memory System for OpenClaw - Retain/Recall/Reflect architecture",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./alma": {
+      "types": "./dist/alma/ALMAAgent.d.ts",
+      "import": "./dist/alma/ALMAAgent.js"
+    },
+    "./memory": {
+      "types": "./dist/observational-memory/ObserverAgent.d.ts",
+      "import": "./dist/observational-memory/ObserverAgent.js"
+    },
+    "./search": {
+      "types": "./dist/knowledge/MemoryIndexer.d.ts",
+      "import": "./dist/knowledge/MemoryIndexer.js"
+    },
+    "./hooks": {
+      "types": "./dist/middleware/hooks.d.ts",
+      "import": "./dist/middleware/hooks.js"
+    },
+    "./dashboard": {
+      "types": "./dist/dashboard/server.d.ts",
+      "import": "./dist/dashboard/server.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "lint": "eslint src",
+    "format": "prettier --write src"
+  },
+  "keywords": [
+    "openclaw",
+    "memory",
+    "hindsight",
+    "alma",
+    "observational-memory",
+    "agent"
+  ],
+  "author": "Artale <arosstale1@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^9.0.0",
+    "express": "^4.18.0",
+    "cors": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  }
+}
