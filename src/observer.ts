@@ -50,9 +50,20 @@ export class ObserverAgent {
     this.config = config;
   }
 
-  /** Sanitize message content — strip control chars, cap length */
+  /** Sanitize message content — strip control chars, Unicode tags, ZW chars, cap length.
+   *  Defends against invisible prompt injection (wunderwuzzi23/embracethered). */
   private sanitize(text: string, maxLen = 8000): string {
-    return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '').slice(0, maxLen);
+    return text
+      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '')           // C0 control chars
+      .replace(/[\u200B-\u200F\u2060-\u206F\uFEFF]/g, '')       // zero-width & format chars
+      .replace(/[\u202A-\u202E]/g, '')                           // bidi embeddings/overrides (Trojan Source)
+      .replace(/[\u2066-\u2069]/g, '')                           // bidi isolates
+      .replace(/\u061C/g, '')                                    // Arabic Letter Mark
+      .replace(/\u00AD/g, '')                                    // Soft Hyphen
+      .replace(/[\uDB40][\uDC00-\uDC7F]/g, '')                  // Unicode Tags U+E0000-E007F (surrogate pairs)
+      .replace(/[\uFE00-\uFE0F]/g, '')                           // Variation Selectors 1-16
+      .replace(/[\uDB40][\uDD00-\uDDEF]/g, '')                  // Variation Selectors 17-256
+      .slice(0, maxLen);
   }
 
   async extract(messages: Message[], source = 'conversation'): Promise<Observation[]> {
