@@ -1,7 +1,8 @@
 {
   "name": "@artale/openclaw-memory",
-  "version": "2.0.1",
-  "description": "Memory system for OpenClaw — ALMA meta-learning + observation extraction + FTS search",
+  "version": "2.0.2",
+  "description": "Agent memory with ALMA meta-learning, LLM fact extraction, and full-text search.",
+  "homepage": "https://github.com/arosstale/openclaw-memory",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

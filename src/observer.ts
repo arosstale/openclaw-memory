@@ -50,8 +50,14 @@ export class ObserverAgent {
     this.config = config;
   }
 
+  /** Sanitize message content — strip control chars, cap length */
+  private sanitize(text: string, maxLen = 8000): string {
+    return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '').slice(0, maxLen);
+  }
+
   async extract(messages: Message[], source = 'conversation'): Promise<Observation[]> {
-    const prompt = EXTRACTION_PROMPT + messages.map(m => `${m.role}: ${m.content}`).join('\n');
+    const sanitized = messages.map(m => `${m.role}: ${this.sanitize(m.content)}`).join('\n');
+    const prompt = EXTRACTION_PROMPT + sanitized;
 
     let response: string;
     try {
@@ -99,12 +105,12 @@ export class ObserverAgent {
       return data.content?.[0]?.text || '';
     }
 
-    // Gemini
+    // Gemini — key in header, not URL (avoids log exposure)
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${this.config.model || 'gemini-2.0-flash'}:generateContent?key=${key}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${this.config.model || 'gemini-2.0-flash'}:generateContent`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
       }
     );
