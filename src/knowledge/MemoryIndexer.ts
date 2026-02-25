@@ -35,7 +35,7 @@ export class MemoryIndexer {
   private db: Database;
   private workspace: string;
   private chunkSize: number;
-  private chunkOverlap: number;
+  readonly chunkOverlap: number;
 
   constructor(config: IndexConfig) {
     this.workspace = config.workspace;

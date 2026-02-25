@@ -3,12 +3,12 @@
  * Simple Express app serving React UI at localhost:9091
  */
 
-import express from 'express';
+import express, { type Express } from 'express';
 import cors from 'cors';
 import { MemoryIndexer } from '../knowledge/MemoryIndexer';
 import { ALMAAgent } from '../alma/ALMAAgent';
 
-const app = express();
+const app: Express = express();
 const PORT = 9091;
 
 app.use(cors());
@@ -21,7 +21,7 @@ let alma: ALMAAgent | null = null;
 /**
  * Initialize dashboard with memory services
  */
-export function initDashboard(config: { indexPath: string; workspace: string; almaPath: string }) {
+export function initDashboard(config: { indexPath: string; workspace: string; almaPath: string }): Express {
   indexer = new MemoryIndexer({
     workspace: config.workspace,
     dbPath: config.indexPath,
@@ -87,7 +87,7 @@ app.get('/api/search', async (req, res) => {
 });
 
 // GET /api/stats - Get memory stats
-app.get('/api/stats', async (req, res) => {
+app.get('/api/stats', async (_req, res) => {
   try {
     if (!alma) throw new Error('ALMA not initialized');
 
@@ -110,7 +110,7 @@ app.get('/api/stats', async (req, res) => {
 });
 
 // GET /api/timeline - Memory timeline
-app.get('/api/timeline', async (req, res) => {
+app.get('/api/timeline', async (_req, res) => {
   try {
     // TODO: Query memories by date
     // For now, return empty timeline (scaffold)
@@ -130,7 +130,7 @@ app.get('/api/timeline', async (req, res) => {
 
 // Serve static React UI
 app.use(express.static('public'));
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>

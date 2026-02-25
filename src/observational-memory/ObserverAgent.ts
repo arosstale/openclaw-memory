@@ -10,16 +10,13 @@
  */
 
 import { LLMClient } from './llm-client';
-import {
+import type {
   Observation,
   ObservationConfig,
-  ObservationKind,
-  PriorityLevel,
-  TemporalAnchor,
 } from './types';
 
 export class ObserverAgent {
-  private config: ObservationConfig;
+  readonly config: ObservationConfig;
   private llm: LLMClient;
 
   constructor(config: ObservationConfig) {

@@ -21,7 +21,7 @@ export * from './knowledge/MemoryIndexer';
  * @param workspacePath Path to ~/.openclaw/workspace
  * @returns Memory system instance with all three subsystems
  */
-export async function initializeMemorySystem(workspacePath: string) {
+export async function initializeMemorySystem(_workspacePath: string) {
   // TODO: Initialize ALMA agent
   // TODO: Initialize Observer agent
   // TODO: Initialize Memory indexer

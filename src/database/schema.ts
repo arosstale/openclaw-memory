@@ -80,8 +80,16 @@ export function migrateSchema(db: Database): void {
   const meta = db.prepare('SELECT value FROM metadata WHERE key = ?').get('schema_version');
   const currentVersion = meta?.value || '0.0.0';
 
-  // Currently at v1.0.0, no migrations needed yet
-  if (currentVersion !== '1.0.0') {
-    throw new Error(`Unknown schema version: ${currentVersion}`);
+  if (currentVersion === '1.0.0') {
+    return; // Up to date
   }
+
+  if (currentVersion === '0.0.0') {
+    // Fresh database — schema was just created by initializeSchema, no migration needed.
+    // The sql.js fallback may not persist the INSERT from initializeSchema,
+    // so we treat 0.0.0 as equivalent to a fresh 1.0.0 install.
+    return;
+  }
+
+  throw new Error(`Unknown schema version: ${currentVersion}`);
 }

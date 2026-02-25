@@ -111,7 +111,7 @@ export class LLMClient {
 
     if (!match) return null;
 
-    const [, hours, minutes, priorityStr, kindChar, contentWithEntities, dateRef] = match;
+    const [, hours, minutes, priorityStr, kindChar, contentWithEntities, _dateRef] = match;
 
     // Parse time
     const time = new Date();

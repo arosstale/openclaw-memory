@@ -23,8 +23,8 @@ import {
 export class ALMAAgent {
   private db: Database;
   private constraints: ParameterConstraints;
-  private populationSize: number;
-  private mutationRate: number;
+  readonly populationSize: number;
+  readonly mutationRate: number;
 
   constructor(config: ALMAConfig) {
     this.db = createDatabase(config.dbPath);

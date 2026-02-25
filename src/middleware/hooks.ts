@@ -29,7 +29,7 @@ export interface AgentResponse {
 
 export class MemoryHook {
   private observer: ObserverAgent;
-  private indexer: MemoryIndexer;
+  readonly indexer: MemoryIndexer;
   private config: HookConfig;
 
   constructor(config: HookConfig) {
