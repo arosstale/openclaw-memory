@@ -102,16 +102,27 @@ Daily Log (YYYY-MM-DD.md)
 ### 1. Install
 
 ```bash
-git clone https://github.com/arosstale/openclaw-memory-template.git
-cd openclaw-memory-template
-pip install -r requirements.txt
+npm install @artale/openclaw-memory
 ```
 
-### 2. Bootstrap Your Workspace
+### 2. Use It
 
-```bash
-# Creates ~/.openclaw/workspace with initial structure
-bash .openclaw/scripts/init.sh
+```typescript
+import { ALMAAgent } from '@artale/openclaw-memory/alma';
+import { ObserverAgent } from '@artale/openclaw-memory/memory';
+import { MemoryIndexer } from '@artale/openclaw-memory/search';
+
+// ALMA: meta-learning memory optimizer
+const alma = new ALMAAgent({ dbPath: './memory.db' });
+
+// Observer: extract facts from conversations
+const observer = new ObserverAgent({ provider: 'anthropic' });
+
+// Indexer: full-text search over memory files
+const indexer = new MemoryIndexer({
+  workspace: '~/.openclaw/workspace',
+  dbPath: './index.db',
+});
 ```
 
 ### 3. Configure OpenClaw to Use It
